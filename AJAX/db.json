@@ -1,0 +1,31 @@
+{
+  "saiyans": [
+    {
+      "nombre": "Goku (Sj1)",
+      "tecnica": "kamehameha furioso",
+      "id": 1
+    },
+    {
+      "nombre": "Vegeta",
+      "tecnica": "Garlick Gun",
+      "id": 2
+    },
+    {
+      "nombre": "Gohan",
+      "tecnica": "cabezazo",
+      "id": 5
+    }
+  ],
+  "namekianos": [
+    {
+      "id": 1,
+      "nombre": "piccoro",
+      "tecnica": "Makankōsappō"
+    },
+    {
+      "nombre": "Dende",
+      "tecnica": "Curacion",
+      "id": 3
+    }
+  ]
+}

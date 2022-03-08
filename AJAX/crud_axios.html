@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD API REST AXIOS</title>
+</head>
+<body>
+    <h1>CRUD API REST AXIOS</h1>
+    <section id="crud">
+        <article>
+            <h2 class="crud-title">Agregar saiyan</h2>
+            <form action="" class="crud-form">
+                <input type="text" name="nombre" placeholder="nombre" required>
+                <br>
+                <input type="text" name="tecnica" placeholder="tecnica insignia" required> 
+                <input type="submit" value="Enviar">
+                <input type="hidden" name="action">
+            </form>
+        </article>
+        <article>
+            <h2>Ver saiyans</h2>
+            <table id="crud-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tecnica</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </article>
+    </section>
+<template id="crud-template">
+    <tr>
+        <td id="td-nombre"></td>
+        <td id="td-tecnica"></td>
+        <td>
+            <button class="edit">Editar</button>
+            <button class="delete">Eliminar</button>
+        </td>
+    </tr>
+</template>
+
+<script>
+    const $table = document.getElementById("crud-table");
+    const $form = document.getElementById("crud-form");
+    const $title = document.getElementById("crud-title");
+    const $template = document.getElementById("crud-template").content;
+    const $fragment = document.createDocumentFragment();
+</script>
+
+</body>
+</html>

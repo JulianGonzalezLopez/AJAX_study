@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD API REST FETCH</title>
+    <link rel="stylesheet" href="style_crud.css">
+</head>
+<body>
+    <h1>CRUD API REST FETCH</h1>
+    <section id="crud">
+        <article>
+            <h2 class="crud-title">Agregar saiyan</h2>
+            <form action="" id="crud-form">
+                <input type="text" name="nombre" placeholder="nombre" required>
+                <br>
+                <input type="text" name="tecnica" placeholder="tecnica insignia" required> 
+                <input type="submit" value="Enviar" id="btn">
+                <input type="hidden" name="id">
+            </form>
+        </article>
+        <article>
+            <h2>Ver saiyans</h2>
+            <table id="crud-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Tecnica</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </article>
+    </section>
+<template id="crud-template">
+    <tr>
+        <td id="td-nombre"></td>
+        <td id="td-tecnica"></td>
+        <td>
+            <button class="edit">Editar</button>
+            <button class="delete">Eliminar</button>
+        </td>
+    </tr>
+</template>
+<script src="crud_fetch_app.js"></script>
+</body>
+</html>

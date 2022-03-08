@@ -1,0 +1,26 @@
+main{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+ol{
+    border: 1px solid red;
+}
+ol > *{
+    padding: 10px;
+}
+.rotar{
+    animation: rotation 2s infinite linear;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+@keyframes rotation {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(359deg);
+    }
+  }
