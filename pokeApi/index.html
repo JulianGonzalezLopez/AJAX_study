@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .grid-fluid{
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+            text-align: center  ;
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <h1>Pokemones</h1>
+    <header>
+
+        <nav id="links">
+        </nav>
+    </header>
+    <main class="grid-fluid">
+        <template>
+            <figure class="pokemon">
+                <img class="foto" src="" alt="">
+                <figcaption class="nombre"></figcaption>
+            </figure>
+        </template>
+    </main>
+
+    <script>
+        const d = document,
+            $main = d.querySelector("main"),
+            $links = d.querySelector("#links"),
+            $fragment = d.createDocumentFragment();
+        
+        let prevUrl = "",
+                $template = "",
+                nextUrl = "";
+            
+        let fetch20Pokemones =  async (e,url) =>{
+            $template = "";
+            if(url == undefined){
+                url = "https://pokeapi.co/api/v2/pokemon";
+            }
+            
+
+             try{
+                console.log(url);
+                let res = await fetch(url);
+                let json = await res.json()
+                ;
+                prevUrl = json.previous ?  `<a href='${json.previous}'>BEFORE</a>` : "";
+                nextUrl = json.next ?  `<a href='${json.next}'>AFTER</a>` : "";
+                $links.innerHTML = `${prevUrl}    ${nextUrl}`
+                console.log(json);
+
+                for(let i = 0; i < json.results.length; i++){
+
+                    let resPok = await fetch(json.results[i].url)
+
+                    let jsonPok = await resPok.json();
+
+                    if(!resPok.ok) throw {status: resPok.status, statusText: resPok.statusText}
+
+                        $template +=
+                            `
+                            <figure class="pokemon">
+                                <img class="foto" src="${jsonPok.sprites.front_shiny}" alt="${jsonPok.name}">
+                                <figcaption class="nombre">${jsonPok.name}</figcaption>
+                            </figure>
+                            `   
+                }
+                console.log("muje")
+                $main.innerHTML = $template;
+                
+                }
+        catch(err){
+            console.log(err.statusText);
+        }
+        finally{ 
+        }
+        }
+        d.addEventListener("DOMContentLoaded",fetch20Pokemones)
+
+        d.addEventListener("click",(e)=>{
+            if(e.target.matches("#links a")){
+                e.preventDefault();
+                fetch20Pokemones(e,e.target.getAttribute("href"));
+            }
+        })
+    </script>
+</body>
+</html>

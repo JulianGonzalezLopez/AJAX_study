@@ -1,0 +1,72 @@
+#seccion{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+}
+
+#form-val{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+#form-val > *{
+    width: 60%;
+    padding:10px;
+    margin:10px;
+    resize: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+}
+#form-val textarea{
+    height: 50px;
+}
+#form-val #replace {
+    display: flex;
+    justify-content: center;
+}
+#form-val #replace > *{
+    padding:10px;
+    margin:10px;
+    resize: none;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    width: 60%;
+}
+#replace img{
+    height: 3rem;
+}
+#form-val [required]:valid{
+    border-color: green;
+}
+#form-val [required]:invalid{
+    border-color: red;
+}
+
+.spanStyle{
+    display: none;
+    background-color: red;
+    color:whitesmoke;
+    font-size: 2rem;
+}
+.spanShow{
+    display: initial;
+}
+.fade{
+    animation-name: fading;
+    animation-duration: 3s;
+}
+@keyframes fading {
+    0%{
+        opacity:1;
+    }
+    75%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

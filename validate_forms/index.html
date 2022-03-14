@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envio de formulario con fetch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <section id="seccion">
+            <header><h2>Validar formularios</h2></header>
+            <form id="form-val"> 
+                <legend>Envianos tus comentarios</legend>
+                <input type="text" name="nombre" id="" placeholder="ej: Gaspar Gomez" required pattern="^[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s]+$" title="Ingresa tu nombre usando solo letras y espacios"> 
+                <input type="email" name="email" id="" placeholder="ej: larilu@termo74.com" required pattern="^[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})$" title="Ingresa un email valido">
+                <input type="text" name="_subject" id="" placeholder="ej: Mis pensamientos sobre el color de la pagina" required title="El asunto es requerido">
+                <textarea name="comments" id="" cols="30" rows="10" placeholder="Escribe tu comentario" required data-pattern="^.{1,255}$" title="El comentario es requerido"></textarea>
+                <div id="replace">
+                    <input type="submit" id="submit-val" value="Enviar">
+                </div>
+            </form>
+        </section>
+        
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
