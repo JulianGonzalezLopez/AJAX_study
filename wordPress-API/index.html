@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Press REST API</title>
+    <style>
+        html{
+            box-sizing: border-box;
+            font-size: 16px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+
+        *,
+        *::after,
+        *::before{
+            box-sizing: border-box;
+        }
+
+        a{
+            color:chartreuse;
+            transition: all .3s ease-in-out;
+        }
+        a:hover{
+            opacity: .75;
+        }
+
+        img{
+            max-width: 100%;
+            height: auto;
+        }
+        img.post-img{
+            border-radius: .5rem;
+        }
+        h1{
+            text-align: center;
+        }
+        hr{
+            border:thin solid yellow;
+            margin: 3rem auto;
+            width: 80%;
+        }
+
+        .site{
+            margin: 1rem auto;
+            padding: 1rem;
+            max-width: 50%;
+            text-align: center;
+        }
+
+        .post{
+            margin: 1rem auto;
+            padding: 1rem;
+            border-radius: .5rem;
+            max-width: 80%;
+            text-align: center;
+            background-color: whitesmoke;
+        }
+
+        .post-date{
+            margin:1rem auto;
+            display: block;
+        }
+        .post-categories,
+        .post-tags{
+            text-align: left;
+        }
+        .post-content{
+            margin: 1rem auto 0rem auto;
+            font-weight: bold;
+        }
+        .post-content>article{
+            padding: 1rem;
+            background-color: aquamarine;
+        }
+
+        .loader{
+            display: block;
+            position:fixed;
+            bottom:50%;
+            margin-bottom: -50px;
+            left: 50%;
+            margin-left: -50px;
+        }
+        #overlay {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: #ffe6e9;
+        opacity: .6;
+        filter: alpha(opacity=60);
+}
+    </style>
+</head>
+<body>
+    <main>
+        <h1>Word Press REST API</h1>
+
+        <article id="site" class="site"></article>
+        <section id="posts" class="post">
+            <img src="assets/hearts.svg" class="loader" alt="Cargando..." srcset="">
+            <template id="post-template">
+                <article class="post">
+                    <img src="" alt="" class="post-img">
+                    <aside>
+                        <h2 class="post-title"></h2>
+                        <figure class="author"></figure>
+                        <small class="post-date"></small>
+                        <a target="_blank" class="post-link">Ver publicacion original</a>
+                        <p class="post-excerpt"></p>
+                        <div class="post-categories"></div>
+                        <div class="post-tags"></div>
+                        <details class="post-content">
+                            <summary>Ver más</summary>
+                            <article></article>
+                        </details>    
+                    </aside>
+                </article>
+                <hr>
+            </template>
+        </section>
+    </main>
+
+
+
+
+
+
+
+
+    <div id="overlay"></div>
+    <script>
+
+        let page = 1,
+        per_page = 5;
+        const d = document,
+            $site = d.getElementById("site"),
+            $loader = d.querySelector(".loader"),
+            $template = d.getElementById("post-template").content,
+            $fragment = d.createDocumentFragment(),
+            $posts = d.querySelector("#posts"),
+            DOMAIN = "https://malvestida.com",
+            SITE = `${DOMAIN}/wp-json`,
+            API_WP = `${SITE}/wp/v2`,
+            POSTS = `${API_WP}/posts?_embed`;
+
+
+
+            function getSiteData(){
+
+                fetch(SITE)
+
+                .then(res=>res.ok ? res.json() : Promise.reject(res))
+
+                .then(json=>{
+                    $site.innerHTML = `
+                        <h3>Sitio Web</h3>
+                        <h2><a href="${json.url}" target="_blank">${json.name}</a>
+                        <p>${json.description}</p>
+                        <p>${json.timezone_string}</p> 
+                    `;
+                })
+
+                .catch(err=>{
+                    console.log(err.status);
+                    $site.innerHTML = `<p>Error: ${err.status} ${err.statusText}`
+                })
+            } 
+            
+            function getPosts(){
+                fetch(`${POSTS}&page=${page}&per_page=${per_page}`)
+
+                .then(res=>res.ok ? res.json() : Promise.reject(res))
+
+                .then(json=>{
+                    $loader.style.display = "block";
+                    console.log(json);  
+                    json.forEach(post=>{
+                        $template.querySelector(".author").textContent = post._embedded.author[0].name;
+                        $template.querySelector(".post-title").innerHTML = post.title.rendered;
+                        $template.querySelector(".post-date").textContent = new Date(post.date).toLocaleString();
+                        let tags = [];
+                        post._embedded["wp:term"][1].forEach(tag=>{
+                            tags.push(tag.name);
+                        })
+                        $template.querySelector(".post-tags").textContent = [...tags];
+                        let categories = [];
+                        post._embedded["wp:term"][0].forEach(category=>{
+                            categories.push(category.name);
+                        })
+                        $template.querySelector(".post-categories").textContent = [...categories];
+                        $template.querySelector(".post-link").href = post.guid.rendered;
+                        $template.querySelector(".post-content article").innerHTML = post.content.rendered;
+                        $template.querySelector(".post-excerpt").innerHTML = post.excerpt.rendered;
+                        //$template.querySelector(".post-img").src = post._embedded["wp:featuredmedia"][0].source_url;
+                        let $clon = document.importNode($template,true);
+                        $fragment.appendChild($clon);   
+                    })
+                    $posts.appendChild($fragment);
+                    page++;
+                    $loader.style.display = "none";
+                    document.querySelector("#overlay").style.display = "none";
+                })
+
+                .catch(err=>{
+                    console.log(err);
+                    $site.innerHTML = `<p>Error: ${err.status} ${err.statusText}`;
+                    $loader.style.display = "none";
+                    document.querySelector("#overlay").style.display = "none";
+                })
+            }
+            d.addEventListener("DOMContentLoaded",()=>{
+                getSiteData();
+                getPosts();
+            })
+    
+            window.addEventListener("scroll",()=>{
+                const {scrollHeight, scrollTop, clientHeight} = document.documentElement;
+                scrollTop + clientHeight >= scrollHeight - 100 ? getPosts() : "";
+            })
+    </script>
+</body>
+</html>
